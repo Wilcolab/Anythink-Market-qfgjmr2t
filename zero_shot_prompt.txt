@@ -1,0 +1,41 @@
+/**
+ * Convert input to snake_case.
+ *
+ * - Accepts any value; `null` or `undefined` become an empty string.
+ * - Handles camelCase and PascalCase boundaries (e.g. `helloWorld` -> `hello_world`).
+ * - Treats any non-alphanumeric character as a separator (spaces, dashes, underscores, dots, punctuation).
+ * - Collapses multiple separators and trims leading/trailing separators.
+ * - Returns lowercase output.
+ *
+ * @param {any} input
+ * @returns {string} snake_cased string
+ *
+ * Example:
+ *   snakeCase('Hello World') => 'hello_world'
+ *   snakeCase('userID') => 'user_id'
+ *   snakeCase('  multiple--separators__here ') => 'multiple_separators_here'
+ */
+function snakeCase(input) {
+	if (input === null || input === undefined) return '';
+	const str = String(input);
+
+	return str
+		// separate camelCase / PascalCase boundaries
+		.replace(/([a-z0-9])([A-Z])/g, '$1_$2')
+		// replace non-alphanumeric characters with underscore
+		.replace(/[^A-Za-z0-9]+/g, '_')
+		// collapse multiple underscores
+		.replace(/_+/g, '_')
+		// trim leading/trailing underscores
+		.replace(/^_+|_+$/g, '')
+		.toLowerCase();
+}
+
+// Quick examples when run in a JS context
+if (typeof module !== 'undefined' && require && require.main === module) {
+	console.log(snakeCase('Hello World')); // 'hello_world'
+	console.log(snakeCase('userID')); // 'user_id'
+	console.log(snakeCase('mobile-number')); // 'mobile_number'
+	console.log(snakeCase('  multiple   separators ')); // 'multiple_separators'
+}
+
