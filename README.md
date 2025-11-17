@@ -20,7 +20,6 @@ The project has the following files and directories:
 
 To run the FastAPI server using Docker, follow these steps:
 
-- Build and start the Docker containers by running the following command:
 
   ```shell
   docker compose up
@@ -28,8 +27,42 @@ To run the FastAPI server using Docker, follow these steps:
 
   This command will build the Docker image for the FastAPI server and start the containers defined in the `docker-compose.yml` file.
 
-- The FastAPI server should now be running. You can access at port `8000`.
 
+
+---
+
+## Node (Express) server
+
+A Node.js + Express implementation was added in `express-server-js/`. It provides the same simple task-list API as the FastAPI app and listens on port `8001`.
+
+- `express-server-js/src/index.js` implements:
+  - `GET /` -> `Hello World`
+  - `GET /tasks` -> `{ tasks: [...] }`
+  - `POST /tasks` -> accepts JSON `{ "text": "..." }` and appends to the in-memory list
+
+- The Node `Dockerfile` was updated to copy only `package.json` and run `npm install` so the image builds even when `yarn.lock` is not present. The `start` script uses `nodemon` for local development.
+
+### Run both services (Docker Compose)
+
+```bash
+docker compose up --build
+```
+
+### Run Node only with Compose
+
+```bash
+docker compose up --build node-server
+```
+
+### Run Node locally (dev)
+
+```bash
+cd express-server-js
+yarn install
+yarn start
+```
+
+If you'd like, I can finish replacing the top-level README with a consolidated document describing both services — tell me if you want the full rewrite now.
 ## API Routes
 
 The FastAPI server provides the following API routes:
